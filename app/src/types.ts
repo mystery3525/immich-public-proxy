@@ -14,6 +14,10 @@ export interface ExifInfo {
   description?: string;
 }
 
+export interface TagResponse {
+  value: string;
+}
+
 export enum AlbumType {
   album = 'ALBUM',
   individual = 'INDIVIDUAL'
@@ -30,6 +34,7 @@ export interface Asset {
   type: AssetType;
   isTrashed: boolean;
   exifInfo?: ExifInfo;
+  tags?: TagResponse[];
 }
 
 export interface Album {
@@ -51,6 +56,7 @@ export interface SharedLink {
     order?: string;
   }
   expiresAt: string | null;
+  tags?: TagResponse[];
 }
 
 export interface SharedLinkResult {

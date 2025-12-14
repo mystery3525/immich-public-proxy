@@ -13,7 +13,9 @@
     "showHomePage": true,
     "showGalleryTitle": false,
     "showMetadata": {
-      "description": false
+      "description": false,
+      "tags": false,
+      "date": false
     },
     "customInvalidResponse": false
   },

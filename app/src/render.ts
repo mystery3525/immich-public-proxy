@@ -5,6 +5,7 @@ import { canDownload, getConfigOption } from './functions'
 import archiver from 'archiver'
 import { respondToInvalidRequest } from './invalidRequestHandler'
 import { sanitize } from './includes/sanitize'
+import { Link } from './icons'
 
 class Render {
   lgConfig
@@ -134,13 +135,13 @@ class Render {
 
       const thumbnailUrl = immich.photoUrl(share.key, asset.id, ImageSize.thumbnail)
       const previewUrl = immich.photoUrl(share.key, asset.id, immich.getPreviewImageSize(asset))
-      const description = getConfigOption('ipp.showMetadata.description', false) && typeof asset?.exifInfo?.description === 'string' ? asset.exifInfo.description.replace(/'/g, '&apos;') : ''
+      const subHtml = this.parseSubHtml(asset)
 
       // Create the full HTML element source to pass to the gallery view
       const itemHtml = [
         video ? `<a data-video='${video}'` : `<a href="${previewUrl}"`,
         downloadUrl ? ` data-download-url="${downloadUrl}"` : '',
-        description ? ` data-sub-html='<p>${description}</p>'` : '',
+        subHtml.length > 0 ? `data-sub-html='${subHtml}'` : '',
         ` data-download="${this.getFilename(asset)}"><img alt="" src="${thumbnailUrl}"/>`,
         video ? '<div class="play-icon"></div>' : '',
         '</a>'
@@ -215,6 +216,49 @@ class Render {
         // By default, it will choose the asset's original filename
         return asset.originalFileName || (asset.id + extension)
     }
+  }
+
+  /**
+   * Generate the subhtml for the particular asset we have
+   */
+  parseSubHtml (asset: Asset) {
+    let html = ''
+
+    // Description Handling
+    if (getConfigOption('ipp.showMetadata.description', false) && typeof asset?.exifInfo?.description === 'string') {
+      html += `<h4>${asset.exifInfo.description.replace(/'/g, '&apos;')}</h4>`
+    }
+
+    const tagsArray: string[] = typeof asset?.tags === 'object' ? asset.tags?.filter((v, _) => v.value.startsWith('ipp/')).sort((a, b) => a.value.localeCompare(b.value)).map((v) => v.value) : []
+
+    // Tag Handling
+    if (getConfigOption('ipp.showMetadata.tags', false) && tagsArray.length > 0) {
+      const tempArray = tagsArray.map((v, _) => {
+        const tagSplit = v.split('/')
+        return tagSplit
+      }).filter((v) => v.length >= 4)
+
+      // Generate a list of Tagging groups
+      const tagGroups: string[] = [...new Set(tempArray.map((v) => {
+        return v[1]
+      }))]
+
+      // For each tagging group, we surround it with a <p> element, with comma seperation between entries
+      tagGroups.forEach((predicate) => {
+        let out = `<p>${predicate} `
+        out += tempArray.filter((v) => v[1] === predicate).map((tagData) => Link(tagData[2].toLowerCase(), tagData[3])).join(', ')
+        out += '</p>'
+        html += out
+      })
+    }
+
+    // Date Handling
+    if (getConfigOption('ipp.showMetadata.date', false) && typeof asset.fileCreatedAt === 'string') {
+      const date = asset.fileCreatedAt?.split('T')[0]
+      html += `<p><i>${date}</i></p>`
+    }
+
+    return html
   }
 }
 

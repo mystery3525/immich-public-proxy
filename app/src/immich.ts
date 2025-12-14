@@ -170,6 +170,24 @@ class Immich {
                 valid: false
               }
             }
+
+            // Request tags seperately for every single asset since sharing is buns
+            album.assets = await Promise.all(album.assets.map(async (asset) => {
+              if (typeof asset.tags !== 'undefined') return asset
+
+              const assetDataRes = await fetch(this.buildUrl(this.apiUrl() + '/assets/' + asset.id, {
+                [keyType]: key,
+                password
+              }))
+              if (assetDataRes.ok) {
+                const newAsset = await assetDataRes.json() as Asset
+                if (typeof newAsset.tags !== 'undefined') return newAsset
+              }
+
+              asset.tags = []
+              return asset
+            }))
+
             // Replace the empty link.assets array with the array of assets from the album
             link.assets = album.assets
           }
