@@ -1,5 +1,20 @@
-function Svg (slug: string, color?: string): string {
-  return `<img height="12" width="12" src="https://cdn.simpleicons.org/${slug}/${color}" />`
+interface SvgModifiers {
+  color?: string;
+  width?: number,
+  height?: number
+}
+
+function Svg (slug: string, mod?: SvgModifiers): string {
+  if (typeof mod === 'undefined') mod = {}
+  return (
+    '<img height="' +
+    (typeof mod.height === 'undefined' ? 12 : mod.height) +
+    '" width="' +
+    (typeof mod.width === 'undefined' ? 12 : mod.width) +
+    `" src="https://cdn.simpleicons.org/${slug}` +
+    (typeof mod.color === 'undefined' ? '' : `/${mod.color}`) +
+    '" />'
+  )
 }
 
 export function Link (site: string, value: string): string {
@@ -10,7 +25,13 @@ export function Link (site: string, value: string): string {
   const b = Brands[site]
   console.log(b)
   if (typeof b.prefix === 'undefined' && typeof b.suffix === 'undefined') return `${b.svg} ${value}` // No link
-  return (`<a href="https://${b.prefix}${value.toLowerCase()}${b.suffix}" target="_blank">${b.svg} ${value}</a>`)
+  return (
+    '<a href="https://' +
+    (typeof b.prefix === 'undefined' ? '' : b.prefix) +
+    value.toLowerCase() +
+    (typeof b.suffix === 'undefined' ? '' : b.suffix) +
+    `" target="_blank">${b.svg} ${value}</a>`
+  )
 }
 
 interface Brand {
@@ -26,7 +47,7 @@ interface BrandsObject {
 const Brands: BrandsObject = {
   carrd: { svg: Svg('carrd'), suffix: '.carrd.co/' },
   discord: { svg: Svg('discord') },
-  furaffinity: { svg: Svg('furaffinity'), prefix: 'furaffinity.net/user/' },
+  furaffinity: { svg: Svg('furaffinity', { color: 'white' }), prefix: 'furaffinity.net/user/' },
   instagram: { svg: Svg('instagram'), prefix: 'instagram.com/' },
-  twitter: { svg: Svg('x', 'white'), prefix: 'x.com/' }
+  twitter: { svg: Svg('x', { color: 'white' }), prefix: 'x.com/' }
 }
