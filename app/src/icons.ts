@@ -23,7 +23,6 @@ export function Link (site: string, value: string): string {
     return ''
   }
   const b = Brands[site]
-  console.log(b)
   if (typeof b.prefix === 'undefined' && typeof b.suffix === 'undefined') return `${b.svg} ${value}` // No link
   return (
     '<a href="https://' +
