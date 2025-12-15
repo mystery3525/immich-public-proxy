@@ -9,13 +9,14 @@ export function Link (site: string, value: string): string {
   }
   const b = Brands[site]
   console.log(b)
-  if (typeof b.url === 'undefined') return `${b.svg} ${value}` // No link
-  return (`<a href="https://${b.url}${value.toLowerCase()}" target="_blank">${b.svg} ${value}</a>`)
+  if (typeof b.prefix === 'undefined' && typeof b.suffix === 'undefined') return `${b.svg} ${value}` // No link
+  return (`<a href="https://${b.prefix}${value.toLowerCase()}${b.suffix}" target="_blank">${b.svg} ${value}</a>`)
 }
 
 interface Brand {
   svg: string;
-  url?: string;
+  prefix?: string;
+  suffix?: string;
 }
 
 interface BrandsObject {
@@ -23,7 +24,9 @@ interface BrandsObject {
 }
 
 const Brands: BrandsObject = {
+  carrd: { svg: Svg('carrd'), suffix: '.carrd.co/' },
   discord: { svg: Svg('discord') },
-  instagram: { svg: Svg('instagram'), url: 'instagram.com/' },
-  twitter: { svg: Svg('x', 'white'), url: 'x.com/' }
+  furaffinity: { svg: Svg('furaffinity'), prefix: 'furaffinity.net/user/' },
+  instagram: { svg: Svg('instagram'), prefix: 'instagram.com/' },
+  twitter: { svg: Svg('x', 'white'), prefix: 'x.com/' }
 }
