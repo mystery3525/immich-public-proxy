@@ -23,7 +23,6 @@
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
-    "simple-icons": "^16.1.0",
     "tslib": "^2.8.1"
   },
   "devDependencies": {

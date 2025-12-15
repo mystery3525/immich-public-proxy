@@ -2,7 +2,7 @@
   "ipp": {
     "responseHeaders": {
       "Cache-Control": "public, max-age=2592000",
-      "Access-Control-Allow-Origin":  "*"
+      "Access-Control-Allow-Origin": "*"
     },
     "singleImageGallery": false,
     "singleItemAutoOpen": true,

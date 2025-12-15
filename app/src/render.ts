@@ -225,7 +225,7 @@ class Render {
     let html = ''
 
     // Description Handling
-    if (getConfigOption('ipp.showMetadata.description', false) && typeof asset?.exifInfo?.description === 'string') {
+    if (getConfigOption('ipp.showMetadata.description', false) && typeof asset?.exifInfo?.description === 'string' && asset.exifInfo.description.length > 0) {
       html += `<h4>${asset.exifInfo.description.replace(/'/g, '&apos;')}</h4>`
     }
 

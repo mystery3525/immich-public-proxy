@@ -1,30 +1,29 @@
-// test
-import * as icons from 'simple-icons'
-
-function Svg (icon: { path:string; hex:string }, title:string) {
-  // return (`<svg viewBox="0 0 24 24" aria-hidden focusable="false" role="img" width="20" height="20">
-  return (`<svg viewBox="0 0 24 24" aria-hidden focusable="false" role="img" width="12" height="12"><path d="${icon.path}" fill="#${icon.hex}"/><title>${title}</title></svg>`)
+function Svg (slug: string, color?: string): string {
+  return `<img height="12" width="12" src="https://cdn.simpleicons.org/${slug}/${color}" />`
 }
 
 export function Link (site: string, value: string): string {
-  if (!(site in Brand)) {
+  if (!(site in Brands)) {
     if (site === 'text') return value
     return ''
   }
-  const b = Brand[site]
+  const b = Brands[site]
+  console.log(b)
+  if (typeof b.url === 'undefined') return `${b.svg} ${value}` // No link
   return (`<a href="https://${b.url}${value.toLowerCase()}" target="_blank">${b.svg} ${value}</a>`)
 }
 
-interface IBrand {
+interface Brand {
   svg: string;
-  url: string;
+  url?: string;
 }
 
-interface IBrandArray {
-  [id: string]: IBrand
+interface BrandsObject {
+  [id: string]: Brand
 }
 
-export const Brand: IBrandArray = {
-  instagram: { svg: Svg(icons.siInstagram, 'Instagram'), url: 'instagram.com/' },
-  twitter: { svg: Svg({ path: icons.siX.path, hex: 'FFFFFF' }, 'x.com'), url: 'x.com/' }
+const Brands: BrandsObject = {
+  discord: { svg: Svg('discord') },
+  instagram: { svg: Svg('instagram'), url: 'instagram.com/' },
+  twitter: { svg: Svg('x', 'white'), url: 'x.com/' }
 }
