@@ -44,9 +44,11 @@ interface BrandsObject {
 }
 
 const Brands: BrandsObject = {
+  bluesky: { svg: Svg('bluesky'), prefix: 'bsky.app/profile/' },
   carrd: { svg: Svg('carrd'), suffix: '.carrd.co/' },
   discord: { svg: Svg('discord') },
   furaffinity: { svg: Svg('furaffinity', { color: 'white' }), prefix: 'furaffinity.net/user/' },
   instagram: { svg: Svg('instagram'), prefix: 'instagram.com/' },
+  telegram: { svg: Svg('telegram'), prefix: 't.me/' },
   twitter: { svg: Svg('x', { color: 'white' }), prefix: 'x.com/' }
 }
