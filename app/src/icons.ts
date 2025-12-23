@@ -6,6 +6,18 @@ interface SvgModifiers {
 
 function Svg (slug: string, mod?: SvgModifiers): string {
   if (typeof mod === 'undefined') mod = {}
+  if (slug.startsWith('https://')) {
+    return (
+      '<img height="' +
+      (typeof mod.height === 'undefined' ? 12 : mod.height) +
+      '" width="' +
+      (typeof mod.width === 'undefined' ? 12 : mod.width) +
+      '" src="' +
+      slug +
+      '" />'
+    )
+  }
+
   return (
     '<img height="' +
     (typeof mod.height === 'undefined' ? 12 : mod.height) +
@@ -50,5 +62,6 @@ const Brands: BrandsObject = {
   furaffinity: { svg: Svg('furaffinity', { color: 'white' }), prefix: 'furaffinity.net/user/' },
   instagram: { svg: Svg('instagram'), prefix: 'instagram.com/' },
   telegram: { svg: Svg('telegram'), prefix: 't.me/' },
-  twitter: { svg: Svg('x', { color: 'white' }), prefix: 'x.com/' }
+  twitter: { svg: Svg('x', { color: 'white' }), prefix: 'x.com/' },
+  vgen: { svg: Svg('https://help.vgen.co/hc/article_attachments/13004231445911'), prefix: 'vgen.co/' }
 }
