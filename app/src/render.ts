@@ -158,10 +158,13 @@ class Render {
       items,
       openItem,
       title: this.title(share),
+      description: this.description(share),
       publicBaseUrl,
+      previewUrl: items?.[0]?.previewUrl,
       path: '/share/' + share.key,
       showDownload: canDownload(share),
       showTitle: getConfigOption('ipp.showGalleryTitle', false),
+      showDescription: getConfigOption('ipp.showGalleryTitle', false),
       lgConfig: getConfigOption('lightGallery', {})
     })
   }
@@ -171,6 +174,13 @@ class Render {
    */
   title (share: SharedLink) {
     return share.description || share?.album?.albumName || 'Gallery'
+  }
+
+  /**
+   * Attempt to get a description from the link description or the album title
+   */
+  description (share: SharedLink) {
+    return typeof share.description === 'undefined' ? (share?.album?.description || 'Gallery') : share?.album?.albumName
   }
 
   /**

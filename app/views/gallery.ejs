@@ -3,15 +3,21 @@
 <head>
     <title><%- title %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <% if (showTitle) { %>
+        <meta property="og:title" content="<%- title %>">
+        <meta name="twitter:title" content="<%- title %>">
+    <% } %>
+    <% if (showDescription) { %>
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:description" content="<%- description %>">
+        <meta property="og:description" content="<%- description %>">
+    <% } %>
     <%
     // Add an og-image using the first image's thumbnail
-    if (items?.[0]?.previewUrl) {
+    if (typeof previewUrl !== 'undefined') {
     %>
-        <meta property="og:title" content="<%- title %>">
-        <meta property="og:image" content="<%- publicBaseUrl %><%- items[0].previewUrl %>">
-        <meta name="twitter:title" content="<%- title %>">
-        <meta name="twitter:image" content="<%- publicBaseUrl %><%- items[0].previewUrl %>">
-        <meta name="twitter:card" content="summary_large_image">
+        <meta property="og:image" content="<%- publicBaseUrl %><%- previewUrl %>">
+        <meta name="twitter:image" content="<%- publicBaseUrl %><%- previewUrl %>">
     <% } %>
     <link rel="icon" href="/share/static/favicon.ico" type="image/x-icon">
     <link type="text/css" rel="stylesheet" href="/share/static/style.css"/>
